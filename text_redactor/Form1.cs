@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -35,6 +36,12 @@ namespace text_redactor
             filename = "";
             isFilechanged = false;
             UpdateTitle();
+
+            InstalledFontCollection fonts = new InstalledFontCollection();
+            foreach (FontFamily family in fonts.Families)
+            {
+                toolStripComboBox1.Items.Add(family.Name);
+            }
         }
 
         public void createNewDocument(object sender, EventArgs e)
@@ -243,6 +250,194 @@ namespace text_redactor
         private void RedoClick(object sender, EventArgs e)
         {
             textBox1.Redo();
+        }
+
+        private void save_icon_click(object sender, EventArgs e)
+        {
+            saveFile(filename);
+        }
+
+        private void open_icon_click(object sender, EventArgs e)
+        {
+            isFileSaved();
+            openFileDialog1.FileName = "";
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    StreamReader sr = new StreamReader(openFileDialog1.FileName);
+                    textBox1.Text = sr.ReadToEnd();
+                    sr.Close();
+                    filename = openFileDialog1.FileName;
+                }
+                catch
+                {
+                    MessageBox.Show("Не удалось открыть файл");
+                }
+            }
+            UpdateTitle();
+        }
+
+        private void back_icon_click(object sender, EventArgs e)
+        {
+            textBox1.Undo();
+        }
+
+        private void forward_icon_click(object sender, EventArgs e)
+        {
+            textBox1.Redo();
+        }
+
+        private void FontSizeForm1(object sender, EventArgs e)
+        {
+            if (textBox1.SelectionFont == null)
+            {
+                return;
+            }
+            textBox1.SelectionFont = new Font(textBox1.SelectionFont.FontFamily, Convert.ToInt32(toolStripComboBox2.Text), textBox1.SelectionFont.Style);
+        }
+
+        private void FontFamilyForm1(object sender, EventArgs e)
+        {
+            if (textBox1.SelectionFont == null)
+            {
+                textBox1.Font = new Font(toolStripComboBox1.Text, textBox1.Font.Size);
+            }
+            textBox1.SelectionFont = new Font(toolStripComboBox1.Text, textBox1.SelectionFont.Size);
+        }
+
+        private void left_align_click(object sender, EventArgs e)
+        {
+            centerAlignStripButton.Checked = false;
+            rightAlignStripButton.Checked = false;
+            if (leftAlignStripButton.Checked == false)
+            {
+                leftAlignStripButton.Checked = true;    
+            }
+            else if (leftAlignStripButton.Checked == true)
+            {
+                leftAlignStripButton.Checked = false;    
+            }
+            textBox1.SelectionAlignment = HorizontalAlignment.Left;    
+        }
+
+        private void center_align_click(object sender, EventArgs e)
+        {
+            leftAlignStripButton.Checked = false;
+            rightAlignStripButton.Checked = false;
+            if (centerAlignStripButton.Checked == false)
+            {
+                centerAlignStripButton.Checked = true;    
+            }
+            else if (centerAlignStripButton.Checked == true)
+            {
+                centerAlignStripButton.Checked = false;    
+            }
+            textBox1.SelectionAlignment = HorizontalAlignment.Center;
+        }
+
+        private void right_align_click(object sender, EventArgs e)
+        {
+            leftAlignStripButton.Checked = false;
+            centerAlignStripButton.Checked = false;
+
+            if (rightAlignStripButton.Checked == false)
+            {
+                rightAlignStripButton.Checked = true;    
+            }
+            else if (rightAlignStripButton.Checked == true)
+            {
+                rightAlignStripButton.Checked = false;    
+            }
+            textBox1.SelectionAlignment = HorizontalAlignment.Right;
+        }
+
+        private void Bold_click(object sender, EventArgs e)
+        {
+            if (boldStripButton.Checked == false)
+            {
+                boldStripButton.Checked = true; 
+            }
+            else if (boldStripButton.Checked == true)
+            {
+                boldStripButton.Checked = false;    
+            }
+
+            if (textBox1.SelectionFont == null)
+            {
+                return;
+            }
+
+            FontStyle style = textBox1.SelectionFont.Style;
+
+            if (textBox1.SelectionFont.Bold)
+            {
+                style &= ~FontStyle.Bold;
+            }
+            else
+            {
+                style |= FontStyle.Bold;
+
+            }
+            textBox1.SelectionFont = new Font(textBox1.SelectionFont, style);
+        }
+
+        private void Italic_click(object sender, EventArgs e)
+        {
+            if (italicStripButton.Checked == false)
+            {
+                italicStripButton.Checked = true;    
+            }
+            else if (italicStripButton.Checked == true)
+            {
+                italicStripButton.Checked = false;    
+            }
+
+            if (textBox1.SelectionFont == null)
+            {
+                return;
+            }
+
+            FontStyle style = textBox1.SelectionFont.Style;
+
+            if (textBox1.SelectionFont.Italic)
+            {
+                style &= ~FontStyle.Italic;
+            }
+            else
+            {
+                style |= FontStyle.Italic;
+            }
+            textBox1.SelectionFont = new Font(textBox1.SelectionFont, style);
+        }
+
+        private void Underline_click(object sender, EventArgs e)
+        {
+            if (underlineStripButton.Checked == false)
+            {
+                underlineStripButton.Checked = true;     
+            }
+            else if (underlineStripButton.Checked == true)
+            {
+                underlineStripButton.Checked = false;    
+            }
+
+            if (textBox1.SelectionFont == null)
+            {
+                return;
+            }
+
+            FontStyle style = textBox1.SelectionFont.Style;
+
+            if (textBox1.SelectionFont.Underline)
+            {
+                style &= ~FontStyle.Underline;
+            }
+            else
+            {
+                style |= FontStyle.Underline;
+            }
+            textBox1.SelectionFont = new Font(textBox1.SelectionFont, style);
         }
     }
 }
