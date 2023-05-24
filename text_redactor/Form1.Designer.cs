@@ -79,8 +79,11 @@ namespace text_redactor
             this.italicStripButton = new System.Windows.Forms.ToolStripButton();
             this.underlineStripButton = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lineColumnStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -273,6 +276,8 @@ namespace text_redactor
             this.textBox1.TabIndex = 1;
             this.textBox1.Text = "";
             this.textBox1.TextChanged += new System.EventHandler(this.TextChanged);
+            this.textBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Key_up);
+            this.textBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Mouse_down);
             // 
             // toolStrip1
             // 
@@ -438,7 +443,6 @@ namespace text_redactor
             // 
             this.boldStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.boldStripButton.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.boldStripButton.Image = ((System.Drawing.Image)(resources.GetObject("boldStripButton.Image")));
             this.boldStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.boldStripButton.Name = "boldStripButton";
             this.boldStripButton.Size = new System.Drawing.Size(28, 29);
@@ -449,7 +453,6 @@ namespace text_redactor
             // 
             this.italicStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.italicStripButton.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
-            this.italicStripButton.Image = ((System.Drawing.Image)(resources.GetObject("italicStripButton.Image")));
             this.italicStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.italicStripButton.Name = "italicStripButton";
             this.italicStripButton.Size = new System.Drawing.Size(23, 29);
@@ -460,7 +463,6 @@ namespace text_redactor
             // 
             this.underlineStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.underlineStripButton.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point);
-            this.underlineStripButton.Image = ((System.Drawing.Image)(resources.GetObject("underlineStripButton.Image")));
             this.underlineStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.underlineStripButton.Name = "underlineStripButton";
             this.underlineStripButton.Size = new System.Drawing.Size(29, 29);
@@ -469,11 +471,26 @@ namespace text_redactor
             // 
             // statusStrip1
             // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1,
+            this.lineColumnStatusLabel});
             this.statusStrip1.Location = new System.Drawing.Point(0, 403);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(691, 22);
             this.statusStrip1.TabIndex = 3;
             this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(0, 17);
+            // 
+            // lineColumnStatusLabel
+            // 
+            this.lineColumnStatusLabel.AutoSize = false;
+            this.lineColumnStatusLabel.Name = "lineColumnStatusLabel";
+            this.lineColumnStatusLabel.Size = new System.Drawing.Size(675, 17);
+            this.lineColumnStatusLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // Form1
             // 
@@ -494,6 +511,8 @@ namespace text_redactor
             this.menuStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -544,5 +563,7 @@ namespace text_redactor
         private ToolStripButton italicStripButton;
         private ToolStripButton underlineStripButton;
         private StatusStrip statusStrip1;
+        private ToolStripStatusLabel toolStripStatusLabel1;
+        private ToolStripStatusLabel lineColumnStatusLabel;
     }
 }

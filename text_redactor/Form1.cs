@@ -9,7 +9,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using System.Data.Common;
 
 namespace text_redactor
 {
@@ -24,6 +24,8 @@ namespace text_redactor
 
         public FontSettings fontsettings;
         public AboutProgramm aboutprogramm;
+
+        public int pos, line, column;
         public Form1()
         {
             InitializeComponent();
@@ -42,6 +44,11 @@ namespace text_redactor
             {
                 toolStripComboBox1.Items.Add(family.Name);
             }
+
+            int pos = textBox1.SelectionStart;
+            int line = textBox1.GetLineFromCharIndex(pos);
+            int column = textBox1.SelectionStart - textBox1.GetFirstCharIndexFromLine(line);
+            lineColumnStatusLabel.Text = "Line " + (line + 1) + ", Column " + (column + 1);
         }
 
         public void createNewDocument(object sender, EventArgs e)
@@ -116,6 +123,11 @@ namespace text_redactor
                 isFilechanged = true;
                 this.Text = "*" + this.Text;
             }
+
+            pos = textBox1.SelectionStart;
+            line = textBox1.GetLineFromCharIndex(pos);
+            column = textBox1.SelectionStart - textBox1.GetFirstCharIndexFromLine(line);
+            lineColumnStatusLabel.Text = "Line " + (line + 1) + ", Column " + (column + 1);
         }
 
         public void UpdateTitle()
@@ -438,6 +450,45 @@ namespace text_redactor
                 style |= FontStyle.Underline;
             }
             textBox1.SelectionFont = new Font(textBox1.SelectionFont, style);
+        }
+
+        private void Key_up(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Down:
+                    pos = textBox1.SelectionStart;    
+                    line = textBox1.GetLineFromCharIndex(pos);    
+                    column = textBox1.SelectionStart - textBox1.GetFirstCharIndexFromLine(line);    
+                    lineColumnStatusLabel.Text = "Line " + (line + 1) + ", Column " + (column + 1);
+                    break;
+                case Keys.Right:
+                    pos = textBox1.SelectionStart; 
+                    line = textBox1.GetLineFromCharIndex(pos); 
+                    column = textBox1.SelectionStart - textBox1.GetFirstCharIndexFromLine(line);   
+                    lineColumnStatusLabel.Text = "Line " + (line + 1) + ", Column " + (column + 1);
+                    break;
+                case Keys.Up:
+                    pos = textBox1.SelectionStart; 
+                    line = textBox1.GetLineFromCharIndex(pos);
+                    column = textBox1.SelectionStart - textBox1.GetFirstCharIndexFromLine(line);    
+                    lineColumnStatusLabel.Text = "Line " + (line + 1) + ", Column " + (column + 1);
+                    break;
+                case Keys.Left:
+                    pos = textBox1.SelectionStart; 
+                    line = textBox1.GetLineFromCharIndex(pos); 
+                    column = textBox1.SelectionStart - textBox1.GetFirstCharIndexFromLine(line);    
+                    lineColumnStatusLabel.Text = "Line " + (line + 1) + ", Column " + (column + 1);
+                    break;
+            }
+        }
+
+        private void Mouse_down(object sender, MouseEventArgs e)
+        {
+            int pos = textBox1.SelectionStart;    
+            int line = textBox1.GetLineFromCharIndex(pos);    
+            int column = textBox1.SelectionStart - textBox1.GetFirstCharIndexFromLine(line);    
+            lineColumnStatusLabel.Text = "Line " + (line + 1) + ", Column " + (column + 1);
         }
     }
 }
