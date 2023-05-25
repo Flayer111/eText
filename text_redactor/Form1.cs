@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.Common;
+using System.Drawing.Printing;
 
 namespace text_redactor
 {
@@ -183,6 +184,7 @@ namespace text_redactor
             try
             {
                 textBox1.Text = textBox1.Text.Remove(textBox1.SelectionStart, textBox1.SelectionLength);
+                textBox1.Select(textBox1.Text.Length, 0);
             }
             catch
             {
@@ -207,6 +209,11 @@ namespace text_redactor
             DeleteText();
         }
 
+        private void SelectAllClick(object sender, EventArgs e)
+        {
+            textBox1.SelectAll();
+        }
+
         private void CloseWindow(object sender, FormClosingEventArgs e)
         {
             isFileSaved();
@@ -216,6 +223,21 @@ namespace text_redactor
         {
             fontsettings = new FontSettings();
             fontsettings.ShowDialog();
+        }
+
+        private void PrintPreviewClick(object sender, EventArgs e)
+        {
+            printPreviewDialog1.Document = printDocument1;
+            printPreviewDialog1.ShowDialog();
+        }
+
+        private void PrintClick(object sender, EventArgs e)
+        {
+            printDialog1.Document = printDocument1;
+            if (printDialog1.ShowDialog() == DialogResult.OK)
+            {
+                printDocument1.Print(); 
+            }
         }
 
         private void OnFocus(object sender, EventArgs e)
@@ -450,7 +472,7 @@ namespace text_redactor
                 style |= FontStyle.Underline;
             }
             textBox1.SelectionFont = new Font(textBox1.SelectionFont, style);
-        }
+        }   
 
         private void Key_up(object sender, KeyEventArgs e)
         {
