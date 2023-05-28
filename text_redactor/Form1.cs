@@ -154,7 +154,7 @@ namespace text_redactor
         {
             try
             {
-                Clipboard.SetText(textBox1.SelectedText);
+                textBox1.Copy();
             }
             catch
             {
@@ -165,8 +165,7 @@ namespace text_redactor
         {
             try
             {
-                Clipboard.SetText(textBox1.Text.Substring(textBox1.SelectionStart, textBox1.SelectionLength));
-                textBox1.Text = textBox1.Text.Remove(textBox1.SelectionStart, textBox1.SelectionLength);
+                textBox1.Cut();
             }
             catch
             {
@@ -175,16 +174,15 @@ namespace text_redactor
         }
         public void PasteText()
         {
-            textBox1.Text = textBox1.Text.Substring(0, textBox1.SelectionStart) + Clipboard.GetText() + textBox1.Text.Substring(textBox1.SelectionStart, textBox1.Text.Length-textBox1.SelectionStart);
-            textBox1.Select(textBox1.Text.Length, 0);
+            textBox1.Paste();
         }
 
         public void DeleteText()
         {
             try
             {
-                textBox1.Text = textBox1.Text.Remove(textBox1.SelectionStart, textBox1.SelectionLength);
-                textBox1.Select(textBox1.Text.Length, 0);
+                textBox1.SelectedText = "";
+                textBox1.Focus();
             }
             catch
             {
